@@ -1,0 +1,103 @@
+.main{
+    background-color: #fff;
+    width: fit-content;
+    border-radius: 30px;
+    padding: 20px;
+}
+
+.imgDiv{
+    width: 300px;
+    /* max-height: 400px; */
+    position: relative;
+}
+
+.imgDiv img{
+    border-radius: 30px 30px 0 0;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.imgDiv .uploadBtn{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: none;
+    background: var(--accent-color);
+    color: #fff;
+}
+
+.imgDiv input{
+    display: none;
+}
+
+.imgDiv svg{
+    width: 100%;
+    height: 200px;
+    margin: 0 auto;
+}
+
+.imgDiv svg path{
+    fill: var(--accent-color);
+}
+
+.info{
+    /* background-color: aqua; */
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+}
+
+.info h1, h3{
+    margin: 0;
+}
+
+.info h1{
+    color: transparent;
+    background: var(--linear-gradient-1);
+    background-clip: text;
+}
+
+.info h3{
+    color: #555;
+    font-weight: 500;
+}
+
+.info .tags{
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    color: transparent;
+    background: var(--linear-gradient-1);
+    background-clip: text;
+}
+
+.info .inp{
+    border: none;
+    font-size: 32px;
+    font-weight: 600;
+    color: transparent;
+    background: var(--linear-gradient-1);
+    background-clip: text;
+}
+.info .inp:nth-child(2){
+    font-size: 18.72px;
+    color: #555;
+    font-weight: 500;
+}
+
+.btn{
+    margin-top: 10px;
+    border: none;
+    background: var(--linear-gradient-2);
+    width: fit-content;
+    padding: 10px 40px;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+}
