@@ -1,64 +1,55 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import classes from './Login.module.css'
-import { auth } from '../../firebase/auth'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
-import { checkUserExists, setUser } from '../../handleData/User'
 import StrengthChecker from '../StrengthChecker/StrengthChecker'
+import { addUser } from '../../apis/auth.api'
 
 const SignUp = () => {
     const navigate = useNavigate()
     const [showPassword, setShowPassword] = useState(false)
-    const [email, setEmail] = useState("")
-    const [userName, setUserName] = useState("")
-    const [name, setName] = useState("")
     const [disabled, setDisabled] = useState(false)
     const [password, setPassword] = useState("")
     const [errorMsg, setErrorMsg] = useState("")
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        userName: "",
+        password: ""
 
-    const codes = {
-        "auth/email-already-in-use": "Email in use. Try Logging In",
-        "auth/weak-password": "Enter a Strong Password",
-        "auth/invalid-email": "Enter a Valid Email",
-    }
+    })
 
     const handleClick = () => {
         setShowPassword(!showPassword)
+    }
 
+    const changeHandler = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        })
     }
     const submitForm = async (e) => {
         e.preventDefault()
         setDisabled(true)
-        if (email === "" || password === "" || userName === "" || name === "") {
+        if (formData.email === "" || formData.password === "" || formData.userName === "" || formData.name === "") {
             setErrorMsg("Please fill all the fields")
             setDisabled(false)
             return
         }
         setErrorMsg("")
-        const userNameAvailable = await checkUserExists(userName);
-        if (!userNameAvailable) {
-            setErrorMsg("Username Already Taken")
-            setDisabled(false)
-            return
-        }
-        createUserWithEmailAndPassword(auth, email, password)
-            .then(async (res) => {
-                const addUser = await setUser(userName, email, name);
-                res.user.displayName = name;
-                console.log(res.user)
-                console.log("User Created");
-                setDisabled(false)
+        const postUser = await addUser(formData)
+            .then((res) => {
+                console.log("res", res);
                 navigate('/')
+                return res
             })
-            .catch(
-                (error) => {
-                    console.log(error);
-                    const errorCode = error.code;
-                    setErrorMsg(codes[errorCode]);
-                    setDisabled(false)
-                }
-            )
-        console.log("Promise Returned");
+            .catch((error) => {
+                console.log("error", error);
+                setErrorMsg(error.response.data.message);
+                return error
+            })
+        console.log("postUser", postUser);
+        setDisabled(false)
     }
     const change = (e) => {
         e.preventDefault()
@@ -68,25 +59,25 @@ const SignUp = () => {
         <div className={classes.main}>
             <form method='POST'>
                 <div className={classes.inputBox}>
-                    <input autoComplete="true" name='userName' type='text' placeholder='userName' value={userName} onChange={(event) => setUserName(event.target.value)} />
+                    <input autoComplete="true" name='userName' type='text' placeholder='userName' onChange={changeHandler} />
                     <span className="material-symbols-outlined" title='UserName'>
                         person
                     </span>
                 </div>
                 <div className={classes.inputBox}>
-                    <input autoComplete="true" name='Name' type='text' placeholder='Name' value={name} onChange={(event) => setName(event.target.value)} />
+                    <input autoComplete="true" name='name' type='text' placeholder='Name' onChange={changeHandler} />
                     <span className="material-symbols-outlined" title='Name'>
                         person
                     </span>
                 </div>
                 <div className={classes.inputBox}>
-                    <input autoComplete="true" name='email' type='text' placeholder='Email' value={email} onChange={(event) => setEmail(event.target.value)} />
+                    <input autoComplete="true" name='email' type='text' placeholder='Email' onChange={changeHandler} />
                     <span className="material-symbols-outlined" title='Email'>
                         person
                     </span>
                 </div>
                 <div className={classes.inputBox}>
-                    <input name='password' autoComplete={"false"} type={showPassword ? "text" : "password"} placeholder='Password' value={password} onChange={(event) => setPassword(event.target.value)} />
+                    <input name='password' autoComplete={"false"} type={showPassword ? "text" : "password"} placeholder='Password' onChange={changeHandler} />
                     <span className="material-symbols-outlined" onClick={handleClick} title={showPassword ? "Hide Password" : "Show Password"}>
                         {showPassword && "visibility_off"}
                         {!showPassword && "visibility"}
