@@ -1,8 +1,7 @@
 import axios from "axios";
 import { getCookie } from "../utils/functions";
 
-axios.defaults.baseURL = "http://localhost:8000/api/v1";
-
+axios.defaults.baseURL = process.env.REACT_APP_BACKEND_LINK;
 
 
 axios.interceptors.request.use(request => {
