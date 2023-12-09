@@ -13,12 +13,10 @@ const Homepage = () => {
     const fetchD = async () => {
       await axios.get('/user/')
       .then(response => {
-        console.log(response.data.user)
         setUser(response.data.user)
       })
       .catch(err => {
         navigate('/login')
-        console.log(err)
       })
     }
     fetchD();

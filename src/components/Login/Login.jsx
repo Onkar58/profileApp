@@ -34,11 +34,11 @@ const Login = () => {
         }
         await loginUser(formData)
             .then((res) => {
-                // console.log("res", res);
+                console.log("res124", res);
                 navigate('/')
             })
             .catch((error) => {
-                // console.log("error", error);
+                console.log("error", error);
                 setErrorMsg(error.response.data.message);
                 return error
             })
